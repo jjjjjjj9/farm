@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.farm.web.mapper.FarmProjectMapper">
+    
+    <resultMap type="FarmProject" id="FarmProjectResult">
+        <result property="id"    column="id"    />
+        <result property="farmId"    column="farm_id"    />
+        <result property="name"    column="name"    />
+        <result property="projectInfo"    column="project_info"    />
+        <result property="projectType"    column="project_type"    />
+        <result property="price"    column="price"    />
+        <result property="availableCapacity"    column="available_capacity"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="remark"    column="remark"    />
+    </resultMap>
+
+    <sql id="selectFarmProjectVo">
+        select id, farm_id, name, project_info, project_type,price, available_capacity, status ,create_by, create_time, update_by, update_time, remark from farm_project
+    </sql>
+
+    <select id="selectFarmProjectList" parameterType="FarmProject" resultMap="FarmProjectResult">
+        <include refid="selectFarmProjectVo"/>
+        <where>  
+            <if test="farmId != null "> and farm_id = #{farmId}</if>
+            <if test="name != null  and name != ''"> and name like concat('%', #{name}, '%')</if>
+            <if test="projectInfo != null  and projectInfo != ''"> and project_info = #{projectInfo}</if>
+            <if test="price != null "> and price = #{price}</if>
+            <if test="availableCapacity != null "> and available_capacity = #{availableCapacity}</if>
+        </where>
+    </select>
+    
+    <select id="selectFarmProjectById" parameterType="Long" resultMap="FarmProjectResult">
+        <include refid="selectFarmProjectVo"/>
+        where id = #{id}
+    </select>
+    <select id="getProjectTypeNum" resultType="com.farm.web.domain.CountObject">
+        SELECT
+            p.project_type as name,
+            COUNT(o.id) AS value
+        FROM
+            farm_order o
+                JOIN
+            farm_project p ON o.project_id = p.id
+        GROUP BY
+            p.project_type
+        ORDER BY
+            value DESC;
+    </select>
+
+    <insert id="insertFarmProject" parameterType="FarmProject" useGeneratedKeys="true" keyProperty="id">
+        insert into farm_project
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="farmId != null">farm_id,</if>
+            <if test="name != null">name,</if>
+            <if test="projectInfo != null">project_info,</if>
+            <if test="price != null">price,</if>
+            <if test="availableCapacity != null">available_capacity,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="remark != null">remark,</if>
+            <if test="projectType != null">project_type,</if>
+
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="farmId != null">#{farmId},</if>
+            <if test="name != null">#{name},</if>
+            <if test="projectInfo != null">#{projectInfo},</if>
+            <if test="price != null">#{price},</if>
+            <if test="availableCapacity != null">#{availableCapacity},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="remark != null">#{remark},</if>
+            <if test="projectType != null">#{projectType},</if>
+         </trim>
+    </insert>
+
+    <update id="updateFarmProject" parameterType="FarmProject">
+        update farm_project
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="farmId != null">farm_id = #{farmId},</if>
+            <if test="name != null">name = #{name},</if>
+            <if test="projectInfo != null">project_info = #{projectInfo},</if>
+            <if test="price != null">price = #{price},</if>
+            <if test="availableCapacity != null">available_capacity = #{availableCapacity},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="status != null">status = #{status},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="remark != null">remark = #{remark},</if>
+            <if test="projectType != null">project_type = #{projectType},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteFarmProjectById" parameterType="Long">
+        delete from farm_project where id = #{id}
+    </delete>
+
+    <delete id="deleteFarmProjectByIds" parameterType="String">
+        delete from farm_project where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

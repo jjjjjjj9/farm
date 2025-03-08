@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.farm.web.mapper.FarmCertifyInfoMapper">
+    
+    <resultMap type="FarmCertifyInfo" id="FarmCertifyInfoResult">
+        <result property="id"    column="id"    />
+        <result property="legalName"    column="legal_name"    />
+        <result property="farmId"    column="farm_id"    />
+        <result property="legalIdCard"    column="legal_id_card"    />
+        <result property="images"    column="images"    />
+        <result property="businessLicenseNum"    column="business_license_num"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="remark"    column="remark"    />
+    </resultMap>
+
+    <sql id="selectFarmCertifyInfoVo">
+        select id, legal_name, legal_id_card,status, farm_id,images, business_license_num, create_by, create_time, update_by, update_time, remark from farm_certify_info
+    </sql>
+
+    <select id="selectFarmCertifyInfoList" parameterType="FarmCertifyInfo" resultMap="FarmCertifyInfoResult">
+        <include refid="selectFarmCertifyInfoVo"/>
+        <where>  
+            <if test="legalName != null  and legalName != ''"> and legal_name like concat('%', #{legalName}, '%')</if>
+            <if test="legalIdCard != null  and legalIdCard != ''"> and legal_id_card = #{legalIdCard}</if>
+            <if test="images != null  and images != ''"> and images = #{images}</if>
+            <if test="businessLicenseNum != null  and businessLicenseNum != ''"> and business_license_num = #{businessLicenseNum}</if>
+        </where>
+    </select>
+    
+    <select id="selectFarmCertifyInfoById" parameterType="Long" resultMap="FarmCertifyInfoResult">
+        <include refid="selectFarmCertifyInfoVo"/>
+        where id = #{id}
+    </select>
+    <select id="selectByUserId" resultType="com.farm.web.domain.FarmCertifyInfo" parameterType="int">
+        select
+            *
+        from farm_certify_info a
+                join farm_info b ON a.farm_id = b.id
+                JOIN sys_user u ON u.user_id = b.owner_id
+        WHERE u.user_id = #{userId}
+    </select>
+
+    <insert id="insertFarmCertifyInfo" parameterType="FarmCertifyInfo" useGeneratedKeys="true" keyProperty="id">
+        insert into farm_certify_info
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="legalName != null">legal_name,</if>
+            <if test="legalIdCard != null">legal_id_card,</if>
+            <if test="images != null">images,</if>
+            <if test="businessLicenseNum != null">business_license_num,</if>
+            <if test="status != null">status,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="remark != null">remark,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="legalName != null">#{legalName},</if>
+            <if test="legalIdCard != null">#{legalIdCard},</if>
+            <if test="images != null">#{images},</if>
+            <if test="businessLicenseNum != null">#{businessLicenseNum},</if>
+            <if test="status != null">#{status}</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="remark != null">#{remark},</if>
+         </trim>
+    </insert>
+
+    <update id="updateFarmCertifyInfo" parameterType="FarmCertifyInfo">
+        update farm_certify_info
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="legalName != null">legal_name = #{legalName},</if>
+            <if test="legalIdCard != null">legal_id_card = #{legalIdCard},</if>
+            <if test="images != null">images = #{images},</if>
+            <if test="businessLicenseNum != null">business_license_num = #{businessLicenseNum},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="status != null">status = #{status},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="remark != null">remark = #{remark},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteFarmCertifyInfoById" parameterType="Long">
+        delete from farm_certify_info where id = #{id}
+    </delete>
+
+    <delete id="deleteFarmCertifyInfoByIds" parameterType="String">
+        delete from farm_certify_info where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

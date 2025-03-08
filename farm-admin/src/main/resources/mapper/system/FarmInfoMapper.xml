@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.farm.web.mapper.FarmInfoMapper">
+    
+    <resultMap type="FarmInfo" id="FarmInfoResult">
+        <result property="id"    column="id"    />
+        <result property="name"    column="name"    />
+        <result property="ownerId"    column="owner_id"    />
+        <result property="images"    column="images"    />
+        <result property="info"    column="info"    />
+        <result property="address"    column="address"    />
+        <result property="farmType"    column="farm_type"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="remark"    column="remark"    />
+        <result property="num"    column="num"    />
+        <result property="avgScore"    column="avg_score"    />
+        <result property="businessTime"    column="business_time"    />
+        <result property="totalCapacity"    column="total_capacity"    />
+        <result property="idRecommend"    column="id_recommend"    />
+        <result property="status"    column="status"    />
+        <result property="tel"    column="tel"    />
+    </resultMap>
+
+    <sql id="selectFarmInfoVo">
+        select * from farm_info
+    </sql>
+
+    <select id="selectFarmInfoList" parameterType="FarmInfo" resultMap="FarmInfoResult">
+        <include refid="selectFarmInfoVo"/>
+        <where>  
+            <if test="name != null  and name != ''"> and name like concat('%', #{name}, '%')</if>
+            <if test="ownerId != null  and ownerId != ''"> and owner_id = #{ownerId}</if>
+            <if test="images != null  and images != ''"> and images = #{images}</if>
+            <if test="info != null  and info != ''"> and info = #{info}</if>
+            <if test="address != null  and address != ''"> and address = #{address}</if>
+            <if test="num != null "> and num = #{num}</if>
+            <if test="avgScore != null "> and avg_score = #{avgScore}</if>
+            <if test="businessTime != null  and businessTime != ''"> and business_time = #{businessTime}</if>
+            <if test="totalCapacity != null "> and total_capacity = #{totalCapacity}</if>
+            <if test="idRecommend != null "> and id_recommend = #{idRecommend}</if>
+            <if test="status != null "> and status = #{status}</if>
+            <if test="tel != null  and tel != ''"> and tel = #{tel}</if>
+        </where>
+    </select>
+    
+    <select id="selectFarmInfoById" parameterType="Long" resultMap="FarmInfoResult">
+        <include refid="selectFarmInfoVo"/>
+        where id = #{id}
+    </select>
+    <select id="getFarmTypeNumData" resultType="com.farm.web.domain.CountObject">
+        SELECT farm_type as name,count(*) as value from farm_info GROUP BY farm_type HAVING farm_type IS NOT null
+    </select>
+
+    <insert id="insertFarmInfo" parameterType="FarmInfo" useGeneratedKeys="true" keyProperty="id">
+        insert into farm_info
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="name != null">name,</if>
+            <if test="ownerId != null">owner_id,</if>
+            <if test="images != null">images,</if>
+            <if test="info != null">info,</if>
+            <if test="address != null">address,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="remark != null">remark,</if>
+            <if test="num != null">num,</if>
+            <if test="avgScore != null">avg_score,</if>
+            <if test="businessTime != null">business_time,</if>
+            <if test="totalCapacity != null">total_capacity,</if>
+            <if test="idRecommend != null">id_recommend,</if>
+            <if test="status != null">status,</if>
+            <if test="tel != null">tel,</if>
+            <if test="businessStatus != null">business_status,</if>
+            <if test="farmType != null">farm_ype,</if>
+            <if test="authentication != null">authentication,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="name != null">#{name},</if>
+            <if test="ownerId != null">#{ownerId},</if>
+            <if test="images != null">#{images},</if>
+            <if test="info != null">#{info},</if>
+            <if test="address != null">#{address},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="remark != null">#{remark},</if>
+            <if test="num != null">#{num},</if>
+            <if test="avgScore != null">#{avgScore},</if>
+            <if test="businessTime != null">#{businessTime},</if>
+            <if test="totalCapacity != null">#{totalCapacity},</if>
+            <if test="idRecommend != null">#{idRecommend},</if>
+            <if test="status != null">#{status},</if>
+            <if test="tel != null">#{tel},</if>
+            <if test="businessStatus != null"> #{businessStatus},</if>
+            <if test="farmType != null">#{farmType},</if>
+            <if test="authentication != null">#{authentication},</if>
+         </trim>
+    </insert>
+
+    <update id="updateFarmInfo" parameterType="FarmInfo">
+        update farm_info
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="name != null">name = #{name},</if>
+            <if test="ownerId != null">owner_id = #{ownerId},</if>
+            <if test="images != null">images = #{images},</if>
+            <if test="info != null">info = #{info},</if>
+            <if test="address != null">address = #{address},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="remark != null">remark = #{remark},</if>
+            <if test="num != null">num = #{num},</if>
+            <if test="avgScore != null">avg_score = #{avgScore},</if>
+            <if test="businessTime != null">business_time = #{businessTime},</if>
+            <if test="totalCapacity != null">total_capacity = #{totalCapacity},</if>
+            <if test="idRecommend != null">id_recommend = #{idRecommend},</if>
+            <if test="status != null">status = #{status},</if>
+            <if test="tel != null">tel = #{tel},</if>
+            <if test="businessStatus != null">business_status = #{businessStatus},</if>
+            <if test="farmType != null">farm_ype = #{farmType},</if>
+            <if test="authentication != null">authentication = #{authentication},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteFarmInfoById" parameterType="Long">
+        delete from farm_info where id = #{id}
+    </delete>
+
+    <delete id="deleteFarmInfoByIds" parameterType="String">
+        delete from farm_info where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>
