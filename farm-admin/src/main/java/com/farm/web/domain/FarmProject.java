@@ -47,9 +47,12 @@ public class FarmProject extends BaseEntity
     @Excel(name = "认证状态")
     private int status;
 
+    private int cnt;
     /** 可预约人数 */
     @Excel(name = "可预约人数")
     private Long availableCapacity;
+
+    private String projectType;
 
     public void setId(int id)
     {

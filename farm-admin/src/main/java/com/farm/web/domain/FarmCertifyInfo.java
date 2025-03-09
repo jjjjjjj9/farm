@@ -39,6 +39,8 @@ public class FarmCertifyInfo extends BaseEntity
     private String images;
     private int farmId;
 
+    private String ownerId;
+
     private int status;
 
     /** 营业执照编号 */

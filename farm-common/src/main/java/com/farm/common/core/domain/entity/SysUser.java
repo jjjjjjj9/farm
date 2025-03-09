@@ -6,6 +6,9 @@ import com.farm.common.annotation.Excel.Type;
 import com.farm.common.annotation.Excels;
 import com.farm.common.core.domain.BaseEntity;
 import com.farm.common.xss.Xss;
+import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
@@ -20,6 +23,9 @@ import java.util.List;
  * 
  * @author ruoyi
  */
+@Data
+@Getter
+@Setter
 public class SysUser extends BaseEntity
 {
     private static final long serialVersionUID = 1L;

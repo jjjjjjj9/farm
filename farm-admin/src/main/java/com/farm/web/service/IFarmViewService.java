@@ -1,7 +1,8 @@
 package com.farm.web.service;
 
-import java.util.List;
 import com.farm.web.domain.FarmView;
+
+import java.util.List;
 
 /**
  * 农庄浏览Service接口
@@ -58,4 +59,6 @@ public interface IFarmViewService
      * @return 结果
      */
     public int deleteFarmViewById(Long id);
+
+    int view(FarmView farmView);
 }

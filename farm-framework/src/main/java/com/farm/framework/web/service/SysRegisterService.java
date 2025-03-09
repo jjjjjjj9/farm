@@ -1,5 +1,6 @@
 package com.farm.framework.web.service;
 
+import com.farm.common.enums.UserType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import com.farm.common.constant.CacheConstants;
@@ -17,6 +18,8 @@ import com.farm.framework.manager.AsyncManager;
 import com.farm.framework.manager.factory.AsyncFactory;
 import com.farm.system.service.ISysConfigService;
 import com.farm.system.service.ISysUserService;
+
+import java.util.Objects;
 
 /**
  * 注册校验方法
@@ -43,7 +46,9 @@ public class SysRegisterService
         String msg = "", username = registerBody.getUsername(), password = registerBody.getPassword();
         SysUser sysUser = new SysUser();
         sysUser.setUserName(username);
-
+        if (Objects.equals(registerBody.getType(), "1")){
+            sysUser.setUserType(UserType.VIEWER.getCode());
+        }
         // 验证码开关
         boolean captchaEnabled = configService.selectCaptchaEnabled();
         if (captchaEnabled)

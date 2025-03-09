@@ -1,25 +1,19 @@
 package com.farm.web.controller;
 
-import java.util.List;
-import javax.servlet.http.HttpServletResponse;
-import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
 import com.farm.common.annotation.Log;
 import com.farm.common.core.controller.BaseController;
 import com.farm.common.core.domain.AjaxResult;
+import com.farm.common.core.page.TableDataInfo;
 import com.farm.common.enums.BusinessType;
+import com.farm.common.utils.poi.ExcelUtil;
 import com.farm.web.domain.FarmView;
 import com.farm.web.service.IFarmViewService;
-import com.farm.common.utils.poi.ExcelUtil;
-import com.farm.common.core.page.TableDataInfo;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.*;
+
+import javax.servlet.http.HttpServletResponse;
+import java.util.List;
 
 /**
  * 农庄浏览Controller
@@ -90,6 +84,15 @@ public class FarmViewController extends BaseController
     {
         return toAjax(farmViewService.updateFarmView(farmView));
     }
+
+    @PreAuthorize("@ss.hasPermi('system:view:add')")
+    @Log(title = "农庄浏览", businessType = BusinessType.INSERT)
+    @PostMapping("/view")
+    public AjaxResult view(@RequestBody FarmView farmView)
+    {
+        return toAjax(farmViewService.view(farmView));
+    }
+
 
     /**
      * 删除农庄浏览

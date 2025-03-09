@@ -1,12 +1,15 @@
 package com.farm.web.service.impl;
 
-import java.util.List;
+import com.farm.common.core.domain.model.LoginUser;
 import com.farm.common.utils.DateUtils;
+import com.farm.common.utils.SecurityUtils;
+import com.farm.web.domain.FarmView;
+import com.farm.web.mapper.FarmViewMapper;
+import com.farm.web.service.IFarmViewService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import com.farm.web.mapper.FarmViewMapper;
-import com.farm.web.domain.FarmView;
-import com.farm.web.service.IFarmViewService;
+
+import java.util.List;
 
 /**
  * 农庄浏览Service业务层处理
@@ -92,5 +95,13 @@ public class FarmViewServiceImpl implements IFarmViewService
     public int deleteFarmViewById(Long id)
     {
         return farmViewMapper.deleteFarmViewById(id);
+    }
+
+    @Override
+    public int view(FarmView farmView) {
+        LoginUser loginUser = SecurityUtils.getLoginUser();
+        farmView.setUserId(loginUser.getUser().getUserId());
+        farmView.setCreateTime(DateUtils.getNowDate());
+        return farmViewMapper.insertFarmView(farmView);
     }
 }

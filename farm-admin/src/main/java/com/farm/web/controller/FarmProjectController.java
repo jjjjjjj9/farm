@@ -35,7 +35,6 @@ public class FarmProjectController extends BaseController
     /**
      * 查询农庄项目列表
      */
-    @PreAuthorize("@ss.hasPermi('system:project:list')")
     @GetMapping("/list")
     public TableDataInfo list(FarmProject farmProject)
     {
@@ -44,7 +43,6 @@ public class FarmProjectController extends BaseController
         return getDataTable(list);
     }
 
-    @PreAuthorize("@ss.hasPermi('system:project:list')")
     @GetMapping("/getProjectTypeNum")
     public Map<String,Object> getProjectTypeNum()
     {
@@ -59,6 +57,12 @@ public class FarmProjectController extends BaseController
         map.put("types",types);
         map.put("values",values);
         return map;
+    }
+    @PreAuthorize("@ss.hasPermi('system:project:list')")
+    @GetMapping("/getHotProject")
+    public List<FarmProject> getHotProject()
+    {
+        return farmProjectService.getHotProject();
     }
 
     /**

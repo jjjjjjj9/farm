@@ -1,7 +1,9 @@
 package com.farm.web.service.impl;
 
+import com.farm.common.core.domain.model.LoginUser;
 import com.farm.common.enums.OrderStatus;
 import com.farm.common.utils.DateUtils;
+import com.farm.common.utils.SecurityUtils;
 import com.farm.web.domain.CountObject;
 import com.farm.web.domain.FarmOrder;
 import com.farm.web.mapper.FarmOrderMapper;
@@ -101,5 +103,13 @@ public class FarmOrderServiceImpl implements IFarmOrderService
     @Override
     public List<CountObject> getMonthOrderPrice() {
         return farmOrderMapper.getMonthOrderPrice();
+    }
+
+    @Override
+    public int createOrder(FarmOrder farmOrder) {
+        LoginUser loginUser = SecurityUtils.getLoginUser();
+        farmOrder.setUserId(loginUser.getUser().getUserId());
+        farmOrder.setOrderStatus(OrderStatus.CREATED.getCode());
+        return farmOrderMapper.insertFarmOrder(farmOrder);
     }
 }

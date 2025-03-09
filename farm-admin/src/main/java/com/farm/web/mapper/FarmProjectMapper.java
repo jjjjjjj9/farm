@@ -62,4 +62,6 @@ public interface FarmProjectMapper
     public int deleteFarmProjectByIds(Long[] ids);
 
     List<CountObject> getProjectTypeNum();
+
+    List<FarmProject> getHotProject();
 }

@@ -1,7 +1,10 @@
 package com.farm.web.service.impl;
 
+import com.farm.common.core.domain.model.LoginUser;
 import com.farm.common.enums.CetyifyStatus;
+import com.farm.common.enums.UserType;
 import com.farm.common.utils.DateUtils;
+import com.farm.common.utils.SecurityUtils;
 import com.farm.web.domain.CountObject;
 import com.farm.web.domain.FarmCertifyInfo;
 import com.farm.web.domain.FarmInfo;
@@ -49,6 +52,10 @@ public class FarmInfoServiceImpl implements IFarmInfoService
     @Override
     public List<FarmInfo> selectFarmInfoList(FarmInfo farmInfo)
     {
+        LoginUser user = SecurityUtils.getLoginUser();
+        if(user.getUser().getUserType()!= UserType.ADMIN.getCode()){
+            farmInfo.setOwnerId(String.valueOf(user.getUser().getUserId()));
+        }
         return farmInfoMapper.selectFarmInfoList(farmInfo);
     }
 

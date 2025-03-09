@@ -24,7 +24,13 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </sql>
 
     <select id="selectFarmProjectList" parameterType="FarmProject" resultMap="FarmProjectResult">
-        <include refid="selectFarmProjectVo"/>
+        SELECT
+        p.*,
+        COUNT(v.id) AS view_count
+        FROM
+        farm_project p
+        LEFT JOIN
+        farm_view v ON v.project_id = p.id
         <where>  
             <if test="farmId != null "> and farm_id = #{farmId}</if>
             <if test="name != null  and name != ''"> and name like concat('%', #{name}, '%')</if>
@@ -32,6 +38,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="price != null "> and price = #{price}</if>
             <if test="availableCapacity != null "> and available_capacity = #{availableCapacity}</if>
         </where>
+        GROUP BY
+        p.id
     </select>
     
     <select id="selectFarmProjectById" parameterType="Long" resultMap="FarmProjectResult">
@@ -50,6 +58,19 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             p.project_type
         ORDER BY
             value DESC;
+    </select>
+    <select id="getHotProject" resultType="com.farm.web.domain.FarmProject">
+        SELECT
+            p.*,
+            COUNT( o.id ) AS cnt
+        FROM
+            farm_order o
+                JOIN farm_project p ON o.project_id = p.id
+        GROUP BY
+            p.id
+        ORDER BY
+            cnt DESC
+        LIMIT 4;
     </select>
 
     <insert id="insertFarmProject" parameterType="FarmProject" useGeneratedKeys="true" keyProperty="id">

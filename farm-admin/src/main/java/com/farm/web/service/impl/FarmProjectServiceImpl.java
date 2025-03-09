@@ -100,4 +100,9 @@ public class FarmProjectServiceImpl implements IFarmProjectService
     public List<CountObject> getProjectTypeNum() {
         return farmProjectMapper.getProjectTypeNum();
     }
+
+    @Override
+    public List<FarmProject> getHotProject() {
+        return farmProjectMapper.getHotProject();
+    }
 }

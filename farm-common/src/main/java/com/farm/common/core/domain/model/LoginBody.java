@@ -1,10 +1,17 @@
 package com.farm.common.core.domain.model;
 
+import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
+
 /**
  * 用户登录对象
  * 
  * @author ruoyi
  */
+@Data
+@Getter
+@Setter
 public class LoginBody
 {
     /**

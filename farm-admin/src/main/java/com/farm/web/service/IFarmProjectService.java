@@ -62,4 +62,6 @@ public interface IFarmProjectService
     public int deleteFarmProjectById(Long id);
 
     List<CountObject> getProjectTypeNum();
+
+    List<FarmProject> getHotProject();
 }

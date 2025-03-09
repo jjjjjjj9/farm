@@ -132,4 +132,11 @@ public class FarmOrderController extends BaseController {
     public AjaxResult remove(@PathVariable Long[] ids) {
         return toAjax(farmOrderService.deleteFarmOrderByIds(ids));
     }
+
+    @PreAuthorize("@ss.hasPermi('system:order:add')")
+    @Log(title = "农庄订单", businessType = BusinessType.INSERT)
+    @PostMapping("/createOrder")
+    public AjaxResult createOrder(@RequestBody FarmOrder farmOrder) {
+        return toAjax(farmOrderService.createOrder(farmOrder));
+    }
 }

@@ -23,11 +23,16 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </sql>
 
     <select id="selectFarmCertifyInfoList" parameterType="FarmCertifyInfo" resultMap="FarmCertifyInfoResult">
-        <include refid="selectFarmCertifyInfoVo"/>
+        SELECT
+        c.*
+        FROM
+        farm_certify_info c
+        JOIN farm_info i on c.farm_id = i.id
         <where>  
             <if test="legalName != null  and legalName != ''"> and legal_name like concat('%', #{legalName}, '%')</if>
             <if test="legalIdCard != null  and legalIdCard != ''"> and legal_id_card = #{legalIdCard}</if>
             <if test="images != null  and images != ''"> and images = #{images}</if>
+            <if test="ownerId != null  and ownerId != ''"> and i.owner_id = #{ownerId}</if>
             <if test="businessLicenseNum != null  and businessLicenseNum != ''"> and business_license_num = #{businessLicenseNum}</if>
         </where>
     </select>

@@ -62,4 +62,6 @@ public interface IFarmOrderService
     public int deleteFarmOrderById(Long id);
 
     List<CountObject> getMonthOrderPrice();
+
+    int createOrder(FarmOrder farmOrder);
 }
