@@ -78,6 +78,11 @@ public class SysUserServiceImpl implements ISysUserService
         return userMapper.selectUserList(user);
     }
 
+    @Override
+    public SysUser selectUserByWeChatId(String wechatId) {
+        return userMapper.selectUserByWeChatId(wechatId);
+    }
+
     /**
      * 根据条件分页查询已分配用户角色列表
      * 

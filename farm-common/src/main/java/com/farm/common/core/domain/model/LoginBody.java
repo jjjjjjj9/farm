@@ -29,6 +29,8 @@ public class LoginBody
      */
     private String code;
 
+    private String wechatId;
+
     /**
      * 唯一标识
      */

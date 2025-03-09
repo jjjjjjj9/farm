@@ -28,6 +28,13 @@ public interface SysUserMapper
     public List<SysUser> selectAllocatedList(SysUser user);
 
     /**
+     * 通过微信账号查询用户
+     * @param wechatId
+     * @return
+     */
+    SysUser selectUserByWeChatId(String wechatId);
+
+    /**
      * 根据条件分页查询未分配用户角色列表
      * 
      * @param user 用户信息

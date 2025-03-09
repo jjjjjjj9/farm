@@ -52,6 +52,9 @@ public class SysLoginService
     @Autowired
     private ISysConfigService configService;
 
+    @Autowired
+    private SysPermissionService permissionService;
+
     /**
      * 登录验证
      * 
@@ -95,6 +98,25 @@ public class SysLoginService
         }
         AsyncManager.me().execute(AsyncFactory.recordLogininfor(username, Constants.LOGIN_SUCCESS, MessageUtils.message("user.login.success")));
         LoginUser loginUser = (LoginUser) authentication.getPrincipal();
+        recordLoginInfo(loginUser.getUserId());
+        // 生成token
+        return tokenService.createToken(loginUser);
+    }
+
+    /**
+     * 微信登陆
+     * @param wechatId
+     * @return
+     */
+    public String loginByWeChat(String wechatId) {
+//         根据openid查用户账号密码，然后在继续使用security的内容
+        SysUser sysUser = userService.selectUserByWeChatId(wechatId);
+        if(sysUser == null){
+            return null;
+        }
+        String username = sysUser.getUserName();
+        AsyncManager.me().execute(AsyncFactory.recordLogininfor(username, Constants.LOGIN_SUCCESS, MessageUtils.message("user.login.success")));
+        LoginUser loginUser = new LoginUser(sysUser.getUserId(), sysUser.getDeptId(), sysUser, permissionService.getMenuPermission(sysUser));
         recordLoginInfo(loginUser.getUserId());
         // 生成token
         return tokenService.createToken(loginUser);

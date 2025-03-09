@@ -57,6 +57,18 @@ public class SysLoginController
         return ajax;
     }
 
+    @PostMapping("/loginByWeChat")
+    public AjaxResult loginByWeChat(@RequestBody LoginBody loginBody){
+        AjaxResult ajax = AjaxResult.success();
+        // 生成令牌
+        String token = loginService.loginByWeChat(loginBody.getWechatId());
+        if(token == null){
+            return AjaxResult.error("登陆失败");
+        }
+        ajax.put(Constants.TOKEN,token);
+        return ajax;
+    }
+
     /**
      * 获取用户信息
      * 
