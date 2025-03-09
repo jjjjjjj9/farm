@@ -26,7 +26,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     <select id="selectFarmProjectList" parameterType="FarmProject" resultMap="FarmProjectResult">
         SELECT
         p.*,
-        COUNT(v.id) AS view_count
+        COUNT(v.id) AS cnt
         FROM
         farm_project p
         LEFT JOIN
@@ -43,8 +43,14 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </select>
     
     <select id="selectFarmProjectById" parameterType="Long" resultMap="FarmProjectResult">
-        <include refid="selectFarmProjectVo"/>
-        where id = #{id}
+        SELECT
+            p.*,
+            COUNT(v.id) AS cnt
+        FROM
+            farm_project p
+                LEFT JOIN
+            farm_view v ON v.project_id = p.id
+        where p.id = #{id}
     </select>
     <select id="getProjectTypeNum" resultType="com.farm.web.domain.CountObject">
         SELECT

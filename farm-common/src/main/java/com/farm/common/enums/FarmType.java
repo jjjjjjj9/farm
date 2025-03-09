@@ -11,7 +11,6 @@ public enum FarmType
     CREATED("A", "亲子体验农庄"),
     PAID("B", "休闲度假农庄"),
     CANCEL("C", "农业观光农庄"),
-
     ;
 
     private final String code;

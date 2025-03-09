@@ -3,8 +3,10 @@ package com.farm.web.service.impl;
 import com.farm.common.utils.DateUtils;
 import com.farm.web.domain.CountObject;
 import com.farm.web.domain.FarmProject;
+import com.farm.web.domain.FarmView;
 import com.farm.web.mapper.FarmProjectMapper;
 import com.farm.web.service.IFarmProjectService;
+import com.farm.web.service.IFarmViewService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -22,6 +24,9 @@ public class FarmProjectServiceImpl implements IFarmProjectService
     @Autowired
     private FarmProjectMapper farmProjectMapper;
 
+    @Autowired
+    private IFarmViewService farmViewService;
+
     /**
      * 查询农庄项目
      * 
@@ -31,6 +36,9 @@ public class FarmProjectServiceImpl implements IFarmProjectService
     @Override
     public FarmProject selectFarmProjectById(Long id)
     {
+        FarmView farmView = new FarmView();
+        farmView.setProjectId(id);
+        farmViewService.view(farmView);
         return farmProjectMapper.selectFarmProjectById(id);
     }
 

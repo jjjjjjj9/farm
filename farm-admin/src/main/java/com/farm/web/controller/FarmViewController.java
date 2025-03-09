@@ -40,6 +40,14 @@ public class FarmViewController extends BaseController
         return getDataTable(list);
     }
 
+    @PreAuthorize("@ss.hasPermi('system:view:list')")
+    @GetMapping("/userView")
+    public AjaxResult userView(FarmView farmView)
+    {
+        List<FarmView> list = farmViewService.selectFarmViewList(farmView);
+        return AjaxResult.success(list);
+    }
+
     /**
      * 导出农庄浏览列表
      */

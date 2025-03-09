@@ -5,6 +5,7 @@ import com.farm.common.core.controller.BaseController;
 import com.farm.common.core.domain.AjaxResult;
 import com.farm.common.core.page.TableDataInfo;
 import com.farm.common.enums.BusinessType;
+import com.farm.common.enums.CetyifyStatus;
 import com.farm.common.enums.FarmType;
 import com.farm.common.utils.poi.ExcelUtil;
 import com.farm.web.domain.CountObject;
@@ -47,6 +48,14 @@ public class FarmInfoController extends BaseController
         startPage();
         List<FarmInfo> list = farmInfoService.selectFarmInfoList(farmInfo);
         return getDataTable(list);
+    }
+
+    @GetMapping("/passList")
+    public AjaxResult passList(FarmInfo farmInfo)
+    {
+        farmInfo.setStatus(CetyifyStatus.PASS.getCode());
+        List<FarmInfo> list = farmInfoService.selectFarmInfoList(farmInfo);
+        return AjaxResult.success(list);
     }
 
     @PreAuthorize("@ss.hasPermi('system:info:list')")

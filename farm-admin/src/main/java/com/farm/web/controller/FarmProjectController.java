@@ -43,6 +43,15 @@ public class FarmProjectController extends BaseController
         return getDataTable(list);
     }
 
+    @GetMapping("/passList")
+    public AjaxResult passList(FarmProject farmProject)
+    {
+        farmProject.setStatus(CetyifyStatus.PASS.getCode());
+        List<FarmProject> list = farmProjectService.selectFarmProjectList(farmProject);
+        return AjaxResult.success(list);
+    }
+
+
     @GetMapping("/getProjectTypeNum")
     public Map<String,Object> getProjectTypeNum()
     {
@@ -58,7 +67,7 @@ public class FarmProjectController extends BaseController
         map.put("values",values);
         return map;
     }
-    @PreAuthorize("@ss.hasPermi('system:project:list')")
+
     @GetMapping("/getHotProject")
     public List<FarmProject> getHotProject()
     {
@@ -81,7 +90,7 @@ public class FarmProjectController extends BaseController
     /**
      * 获取农庄项目详细信息
      */
-    @PreAuthorize("@ss.hasPermi('system:project:query')")
+
     @GetMapping(value = "/{id}")
     public AjaxResult getInfo(@PathVariable("id") Long id)
     {

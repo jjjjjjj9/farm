@@ -3,9 +3,11 @@ package com.farm.web.controller;
 import com.farm.common.annotation.Log;
 import com.farm.common.core.controller.BaseController;
 import com.farm.common.core.domain.AjaxResult;
+import com.farm.common.core.domain.model.LoginUser;
 import com.farm.common.core.page.TableDataInfo;
 import com.farm.common.enums.BusinessType;
 import com.farm.common.enums.OrderStatus;
+import com.farm.common.utils.SecurityUtils;
 import com.farm.common.utils.poi.ExcelUtil;
 import com.farm.web.domain.CountObject;
 import com.farm.web.domain.FarmOrder;
@@ -40,6 +42,14 @@ public class FarmOrderController extends BaseController {
         startPage();
         List<FarmOrder> list = farmOrderService.selectFarmOrderList(farmOrder);
         return getDataTable(list);
+    }
+
+    @GetMapping("/orderList")
+    public AjaxResult orderList(FarmOrder farmOrder) {
+        LoginUser user = SecurityUtils.getLoginUser();
+        farmOrder.setOrderStatus(String.valueOf(user.getUser().getUserId()));
+        List<FarmOrder> list = farmOrderService.selectFarmOrderList(farmOrder);
+        return AjaxResult.success(list);
     }
 
     @PreAuthorize("@ss.hasPermi('system:order:list')")
