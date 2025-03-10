@@ -6,6 +6,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     
     <resultMap type="FarmProject" id="FarmProjectResult">
         <result property="id"    column="id"    />
+        <result property="ownerId"    column="owner_id"    />
+        <result property="ownerUsername"    column="owner_username"    />
         <result property="farmId"    column="farm_id"    />
         <result property="name"    column="name"    />
         <result property="projectInfo"    column="project_info"    />
@@ -45,11 +47,13 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     
     <select id="selectFarmProjectById" parameterType="Long" resultMap="FarmProjectResult">
         SELECT
-            p.*,
+            p.*,i.owner_id,u.user_name as owner_username,
             (select count(v.id) from farm_view v WHERE v.project_id = p.id)   AS cnt,
             (select count(o.id) from farm_order o WHERE o.project_id = p.id)   AS ocnt
         FROM
             farm_project p
+        left join farm_info i on i.id = p.farm_id
+        left join sys_user u on u.user_id = i.owner_id
         where p.id = #{id}
     </select>
     <select id="getProjectTypeNum" resultType="com.farm.web.domain.CountObject">

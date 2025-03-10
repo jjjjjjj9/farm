@@ -50,6 +50,10 @@ public class FarmProject extends BaseEntity
     @Excel(name = "项目图片")
     private String images;
 
+    private Long ownerId;
+
+    private String ownerUsername;
+
     private int cnt;
 
     private int ocnt;
