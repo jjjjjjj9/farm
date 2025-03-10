@@ -102,6 +102,11 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		<!-- 数据范围过滤 -->
 		${params.dataScope}
 	</select>
+
+	<select id="selectUserByWeChatId" parameterType="String" resultMap="SysUserResult">
+		<include refid="selectUserVo"/>
+		where u.wechat_id = #{wechatId}
+	</select>
 	
 	<select id="selectUnallocatedList" parameterType="SysUser" resultMap="SysUserResult">
 	    select distinct u.user_id, u.dept_id, u.user_name, u.nick_name, u.email, u.phonenumber, u.status, u.create_time
