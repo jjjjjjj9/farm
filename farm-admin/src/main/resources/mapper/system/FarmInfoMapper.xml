@@ -38,6 +38,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="images != null  and images != ''"> and images = #{images}</if>
             <if test="info != null  and info != ''"> and info = #{info}</if>
             <if test="address != null  and address != ''"> and address = #{address}</if>
+            <if test="status != null  and status != ''"> and status = #{status}</if>
             <if test="num != null "> and num = #{num}</if>
             <if test="avgScore != null "> and avg_score = #{avgScore}</if>
             <if test="businessTime != null  and businessTime != ''"> and business_time = #{businessTime}</if>
@@ -125,7 +126,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="status != null">status = #{status},</if>
             <if test="tel != null">tel = #{tel},</if>
             <if test="businessStatus != null">business_status = #{businessStatus},</if>
-            <if test="farmType != null">farm_ype = #{farmType},</if>
+            <if test="farmType != null">farm_type = #{farmType},</if>
             <if test="authentication != null">authentication = #{authentication},</if>
         </trim>
         where id = #{id}

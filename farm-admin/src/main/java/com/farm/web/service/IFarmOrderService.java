@@ -2,6 +2,7 @@ package com.farm.web.service;
 
 import com.farm.web.domain.CountObject;
 import com.farm.web.domain.FarmOrder;
+import com.farm.web.domain.FarmProject;
 
 import java.util.List;
 
@@ -63,5 +64,5 @@ public interface IFarmOrderService
 
     List<CountObject> getMonthOrderPrice();
 
-    int createOrder(FarmOrder farmOrder);
+    int createOrder(FarmProject farmProject);
 }

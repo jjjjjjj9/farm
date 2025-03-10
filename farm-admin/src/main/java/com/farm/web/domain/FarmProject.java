@@ -47,7 +47,12 @@ public class FarmProject extends BaseEntity
     @Excel(name = "认证状态")
     private int status;
 
+    @Excel(name = "项目图片")
+    private String images;
+
     private int cnt;
+
+    private int ocnt;
     /** 可预约人数 */
     @Excel(name = "可预约人数")
     private Long availableCapacity;

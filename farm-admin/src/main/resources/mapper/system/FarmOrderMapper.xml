@@ -26,6 +26,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         u.user_name as userName,
         p.name as projectName,
         i.`name` AS farmName,
+        p.images as projectImages,
+        p.price as projectPrice,
+        i.business_time as businessTime,
         o.*
         FROM
         farm_order o
@@ -33,10 +36,10 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         JOIN farm_project p ON p.id = o.project_id
         JOIN farm_info i ON i.id = p.farm_id
         <where>  
-            <if test="userId != null "> and user_id = #{userId}</if>
-            <if test="projectId != null "> and project_id = #{projectId}</if>
-            <if test="price != null "> and price = #{price}</if>
-            <if test="orderStatus != null  and orderStatus != ''"> and order_status = #{orderStatus}</if>
+            <if test="userId != null "> and o.user_id = #{userId}</if>
+            <if test="projectId != null "> and o.project_id = #{projectId}</if>
+            <if test="price != null "> and o.price = #{price}</if>
+            <if test="orderStatus != null  and orderStatus != ''"> and o.order_status = #{orderStatus}</if>
         </where>
     </select>
     

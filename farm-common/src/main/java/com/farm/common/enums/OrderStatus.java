@@ -13,7 +13,8 @@ public enum OrderStatus
     DELIVERED("D", "已确认"),
     RECEIVED("E", "已完成"),
     DELETED("F", "已删除"),
-    REFUND("G", "已退款"),
+    AREFUND("G", "退款审核"),
+    REFUND("H", "已退款")
     ;
 
     private final String code;

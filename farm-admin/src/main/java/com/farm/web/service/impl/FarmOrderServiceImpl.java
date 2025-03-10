@@ -6,6 +6,7 @@ import com.farm.common.utils.DateUtils;
 import com.farm.common.utils.SecurityUtils;
 import com.farm.web.domain.CountObject;
 import com.farm.web.domain.FarmOrder;
+import com.farm.web.domain.FarmProject;
 import com.farm.web.mapper.FarmOrderMapper;
 import com.farm.web.service.IFarmOrderService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -106,10 +107,14 @@ public class FarmOrderServiceImpl implements IFarmOrderService
     }
 
     @Override
-    public int createOrder(FarmOrder farmOrder) {
+    public int createOrder(FarmProject farmProject) {
+        FarmOrder farmOrder = new FarmOrder();
         LoginUser loginUser = SecurityUtils.getLoginUser();
+        farmOrder.setPrice(farmProject.getPrice());
+        farmOrder.setProjectId(Long.parseLong(String.valueOf(farmProject.getId())));
         farmOrder.setUserId(loginUser.getUser().getUserId());
         farmOrder.setOrderStatus(OrderStatus.CREATED.getCode());
+        farmOrder.setCreateTime(DateUtils.getNowDate());
         return farmOrderMapper.insertFarmOrder(farmOrder);
     }
 }

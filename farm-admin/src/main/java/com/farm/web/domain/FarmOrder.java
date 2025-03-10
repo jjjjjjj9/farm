@@ -45,6 +45,9 @@ public class FarmOrder extends BaseEntity
     private String userName;
     private String farmName;
     private String projectName;
+    private String projectImages;
+    private String projectPrice;
+    private String businessTime;
 
 
     public void setId(Long id) 

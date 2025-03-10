@@ -11,6 +11,7 @@ import com.farm.common.utils.SecurityUtils;
 import com.farm.common.utils.poi.ExcelUtil;
 import com.farm.web.domain.CountObject;
 import com.farm.web.domain.FarmOrder;
+import com.farm.web.domain.FarmProject;
 import com.farm.web.service.IFarmOrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -47,7 +48,7 @@ public class FarmOrderController extends BaseController {
     @GetMapping("/orderList")
     public AjaxResult orderList(FarmOrder farmOrder) {
         LoginUser user = SecurityUtils.getLoginUser();
-        farmOrder.setOrderStatus(String.valueOf(user.getUser().getUserId()));
+        farmOrder.setUserId(Long.valueOf(String.valueOf(user.getUser().getUserId())));
         List<FarmOrder> list = farmOrderService.selectFarmOrderList(farmOrder);
         return AjaxResult.success(list);
     }
@@ -109,15 +110,13 @@ public class FarmOrderController extends BaseController {
         return toAjax(farmOrderService.updateFarmOrder(farmOrder));
     }
 
-    @PreAuthorize("@ss.hasPermi('system:order:edit')")
     @Log(title = "农庄订单", businessType = BusinessType.UPDATE)
     @PutMapping("/confirmOrder")
     public AjaxResult confirmOrder(@RequestBody FarmOrder farmOrder) {
-        farmOrder.setOrderStatus(OrderStatus.DELIVERED.getCode());
+        farmOrder.setOrderStatus(OrderStatus.RECEIVED.getCode());
         return toAjax(farmOrderService.updateFarmOrder(farmOrder));
     }
 
-    @PreAuthorize("@ss.hasPermi('system:order:edit')")
     @Log(title = "农庄订单", businessType = BusinessType.UPDATE)
     @PutMapping("/cancelOrder")
     public AjaxResult cancelOrder(@RequestBody FarmOrder farmOrder) {
@@ -125,10 +124,23 @@ public class FarmOrderController extends BaseController {
         return toAjax(farmOrderService.updateFarmOrder(farmOrder));
     }
 
-    @PreAuthorize("@ss.hasPermi('system:order:edit')")
+    @Log(title = "农庄订单", businessType = BusinessType.UPDATE)
+    @PutMapping("/payOrder")
+    public AjaxResult payOrder(@RequestBody FarmOrder farmOrder) {
+        farmOrder.setOrderStatus(OrderStatus.PAID.getCode());
+        return toAjax(farmOrderService.updateFarmOrder(farmOrder));
+    }
+
     @Log(title = "农庄订单", businessType = BusinessType.UPDATE)
     @PutMapping("/refundOrder")
     public AjaxResult refundOrder(@RequestBody FarmOrder farmOrder) {
+        farmOrder.setOrderStatus(OrderStatus.AREFUND.getCode());
+        return toAjax(farmOrderService.updateFarmOrder(farmOrder));
+    }
+
+    @Log(title = "农庄订单", businessType = BusinessType.UPDATE)
+    @PutMapping("/confirmRefundOrder")
+    public AjaxResult confirmRefundOrder(@RequestBody FarmOrder farmOrder) {
         farmOrder.setOrderStatus(OrderStatus.REFUND.getCode());
         return toAjax(farmOrderService.updateFarmOrder(farmOrder));
     }
@@ -136,17 +148,17 @@ public class FarmOrderController extends BaseController {
     /**
      * 删除农庄订单
      */
-    @PreAuthorize("@ss.hasPermi('system:order:remove')")
+
     @Log(title = "农庄订单", businessType = BusinessType.DELETE)
     @DeleteMapping("/{ids}")
     public AjaxResult remove(@PathVariable Long[] ids) {
         return toAjax(farmOrderService.deleteFarmOrderByIds(ids));
     }
 
-    @PreAuthorize("@ss.hasPermi('system:order:add')")
-    @Log(title = "农庄订单", businessType = BusinessType.INSERT)
+//    @PreAuthorize("@ss.hasPermi('system:order:add')")
+
     @PostMapping("/createOrder")
-    public AjaxResult createOrder(@RequestBody FarmOrder farmOrder) {
-        return toAjax(farmOrderService.createOrder(farmOrder));
+    public AjaxResult createOrder(@RequestBody FarmProject farmProject) {
+        return toAjax(farmOrderService.createOrder(farmProject));
     }
 }
